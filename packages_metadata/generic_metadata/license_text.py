@@ -1,13 +1,13 @@
 from ..generic import ToStrMixin, file_get_content
-from itertools import ifilter, izip
+from six.moves import filter, zip
 from functools import wraps
 import collections
 import os
-import os.path
+import six
 
 
 def reverse_enumerate(lst):
-    return izip(xrange(len(lst)-1, -1, -1), reversed(lst))
+    return zip(xrange(len(lst)-1, -1, -1), reversed(lst))
 
 
 def filter_predicate(file_name, file_path):
@@ -27,11 +27,14 @@ class LicenseMixin(ToStrMixin):
 class Licenses(LicenseMixin):
     __slots__ = ('is_valid', 'licenses_dict', 'licenses_path', 'tree_path')
 
-    def __init__(self, tree_path):
+    def __init__(self, tree_path='/usr/portage',
+                 licenses_path='/usr/portage/licenses'):
         self.licenses_dict = {}
         self.is_valid = False
         self.tree_path = tree_path
-        self.licenses_path = os.path.join(tree_path, 'licenses')
+        if licenses_path is None:
+            licenses_path = os.path.join(tree_path, 'licenses')
+        self.licenses_path = licenses_path
         if os.path.isdir(self.licenses_path):
             self.is_valid = True
             self._fetch_licenses_list()
@@ -39,14 +42,14 @@ class Licenses(LicenseMixin):
     def _fetch_licenses_list(self):
         dir_list = os.listdir(self.licenses_path)
         f = lambda x: filter_predicate(x, self.licenses_path)
-        licenses_list = ((s.lower(), s) for s in ifilter(f, dir_list))
+        licenses_list = ((s.lower(), s) for s in filter(f, dir_list))
         self.licenses_dict = dict(licenses_list)
 
     def __len__(self):
         return len(self.licenses_dict)
 
     def __contains__(self, item):
-        item = unicode(item)
+        item = six.u(item)
         return item.lower() in self.licenses_dict
 
     def __iter__(self):
@@ -67,7 +70,7 @@ class Licenses(LicenseMixin):
 
     def get_license_path(self, license):
         try:
-            key = unicode(license).lower()
+            key = six.u(license).lower()
         except:
             raise TypeError
         return os.path.join(self.licenses_path, self.licenses_dict[key])
@@ -76,7 +79,7 @@ class Licenses(LicenseMixin):
         return file_get_content(self.get_license_path(key))
 
     def __unicode__(self):
-        return unicode(self.tree_path)
+        return six.u(self.tree_path)
 
 
 def preinit_cache(func):
@@ -155,7 +158,7 @@ class LicensesSet(LicenseMixin):
 
     @preinit_cache
     def __contains__(self, item):
-        item = unicode(item)
+        item = six.u(item)
         return item.lower() in self._cache
 
     @preinit_cache
@@ -165,7 +168,7 @@ class LicensesSet(LicenseMixin):
     @preinit_cache
     def __getitem__(self, key):
         try:
-            key = unicode(key).lower()
+            key = six.u(key).lower()
         except:
             raise TypeError
         return self.licenses_list[self._cache[key.lower()]][key]

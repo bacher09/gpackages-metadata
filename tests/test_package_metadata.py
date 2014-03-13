@@ -3,7 +3,7 @@ from packages_metadata.generic_metadata import package_metadata
 import os.path
 
 
-class TestUseInfo(TestCase):
+class TestPackageMetadata(TestCase):
 
     @classmethod
     def setUpClass(cls):
