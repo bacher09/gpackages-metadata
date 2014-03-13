@@ -12,7 +12,7 @@ def lt33():
     v = sys.version_info
     return (v[0], v[1]) < (3, 3)
 
-install_packages = []
+install_packages = ['six']
 tests_require = [
     'nose>=1.0',
     'coverage'

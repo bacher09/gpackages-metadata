@@ -4,6 +4,7 @@
 import os.path
 import hashlib
 import types
+import six
 from datetime import datetime
 
 
@@ -70,7 +71,7 @@ def toint(val, defval=None):
         return defval
 
 
-class StrThatIgnoreCase(unicode):
+class StrThatIgnoreCase(six.text_type):
     "Case insensetive string, that remembers case"
     __slots__ = ('_forcmp',)
 
@@ -96,8 +97,12 @@ class ToStrMixin(object):
     """Abstract class for inheritence, allow add simple `__str__` and
     `__repr__` methods
     """
-    def __str__(self):
-        return unicode(self).encode('utf-8')
+    if six.PY2:
+        def __str__(self):
+            return unicode(self).encode('utf-8')
+    else:
+        def __str__(self):
+            return self.__unicode__()
 
     def __repr__(self):
         return '<%s %s>' % (type(self).__name__, self.__str__())

@@ -1,6 +1,7 @@
 from ..generic import ToStrMixin
 #XML
 from .my_etree import etree
+import six
 
 
 __all__ = ('CategoryMetadata', )
@@ -37,4 +38,4 @@ class CategoryMetadata(ToStrMixin):
         return self._descrs.get('en')
 
     def __unicode__(self):
-        return unicode(self._metadata_path)
+        return six.u(self._metadata_path)
