@@ -97,12 +97,12 @@ class ToStrMixin(object):
     """Abstract class for inheritence, allow add simple `__str__` and
     `__repr__` methods
     """
-    if six.PY2:
-        def __str__(self):
-            return unicode(self).encode('utf-8')
-    else:
+    if six.PY3:
         def __str__(self):
             return self.__unicode__()
+    else:
+        def __str__(self):
+            return unicode(self).encode('utf-8')
 
     def __repr__(self):
         return '<%s %s>' % (type(self).__name__, self.__str__())
