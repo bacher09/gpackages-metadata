@@ -1,13 +1,16 @@
 """Some generic things used in this module"""
 
+
 import os.path
 import hashlib
 import types
 from datetime import datetime
 
-__all__ = ('StrThatIgnoreCase', 'ToStrMixin', 'file_get_content', 'file_sha1',\
-           'file_mtime', 'cached_property', 'iter_over_gen', 'lofstr_to_ig', \
+
+__all__ = ('StrThatIgnoreCase', 'ToStrMixin', 'file_get_content', 'file_sha1',
+           'file_mtime', 'cached_property', 'iter_over_gen', 'lofstr_to_ig',
            'toint', 'Enum')
+
 
 class Enum(object):
     "Enum object"
@@ -26,13 +29,15 @@ class Enum(object):
         self.num_dict = dct2
 
     def get_as_tuple(self):
-       "Return tuple to use as choices in django model"
-       return tuple([(num, item) for num, item in enumerate(self.list)])
+        "Return tuple to use as choices in django model"
+        return tuple([(num, item) for num, item in enumerate(self.list)])
+
 
 def iter_over_gen(iterat, name):
     for obj in iterat:
         for item in getattr(obj, name)():
             yield item
+
 
 def del_from_dict(what_list, dict_todel):
     for item in what_list:
@@ -40,6 +45,7 @@ def del_from_dict(what_list, dict_todel):
             del dict_todel[item]
     #dict_todel already modified
     return dict_todel
+
 
 def get_from_kwargs_and_del(list_what, kwargs):
     ret_list = []
@@ -51,16 +57,18 @@ def get_from_kwargs_and_del(list_what, kwargs):
         else:
             ret_list.append(None)
     del_from_dict(list_what, kwargs)
-    if len(ret_list)==1:
+    if len(ret_list) == 1:
         return ret_list[0]
     else:
         return ret_list
-            
-def toint(val, defval = None):
+
+
+def toint(val, defval=None):
     try:
         return int(val)
     except ValueError:
         return defval
+
 
 class StrThatIgnoreCase(unicode):
     "Case insensetive string, that remembers case"
@@ -79,12 +87,14 @@ class StrThatIgnoreCase(unicode):
     def __ne__(self, other):
         return self._forcmp != unicode(other).lower()
 
+
 def lofstr_to_ig(list_obj):
-    return [ StrThatIgnoreCase(item) for item in list_obj]
+    return [StrThatIgnoreCase(item) for item in list_obj]
+
 
 class ToStrMixin(object):
-    """Abstract class for inheritence, allow add simple `__str__` and `__repr__`
-    methods
+    """Abstract class for inheritence, allow add simple `__str__` and
+    `__repr__` methods
     """
     def __str__(self):
         return unicode(self).encode('utf-8')
@@ -106,6 +116,7 @@ def file_get_content(file_path):
     else:
         return None
 
+
 def file_sha1(file_path):
     """Args:
         file_path -- full path to file
@@ -117,6 +128,7 @@ def file_sha1(file_path):
             sha1 = hashlib.sha1(f.read()).hexdigest()
     return sha1
 
+
 def file_mtime(file_path):
     """Args:
         file_path -- full path to file
@@ -127,8 +139,9 @@ def file_mtime(file_path):
     else:
         return None
 
+
 class cached_property(object):
-    def __init__(self, func, name = None):
+    def __init__(self, func, name=None):
         self.func = func
         if name is None:
             name = func.__name__

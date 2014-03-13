@@ -3,7 +3,9 @@ from functools import total_ordering
 from collections import defaultdict
 from .abstract import AbstractKeywords, AbstractUse
 
+
 __all__ = ('Use', 'Keyword', 'KeywordsSet')
+
 
 class Use(ToStrMixin, AbstractUse):
     "Represend Use flag as object"
@@ -30,21 +32,22 @@ class Use(ToStrMixin, AbstractUse):
 
     def __hash__(self):
         return hash(self.name)
-        
+
+
 @total_ordering
 class Keyword(ToStrMixin, AbstractKeywords):
     "Represend ebuild Keyword as object"
     __slots__ = ('name', 'status')
-    status_repr = ['','~','-']
-    
-    def __init__(self, name, status = 0):
+    status_repr = ['', '~', '-']
+
+    def __init__(self, name, status=0):
         """Args:
 
             name -- name of keyword, it may start with ~ or -, if so than \
                     status will be auto seting.
 
             status -- status of keyword:
-            
+
               *  0 -- stable,
               *  1 -- utested '~'
               *  2 -- unstable '-'
@@ -62,7 +65,7 @@ class Keyword(ToStrMixin, AbstractKeywords):
 
         self.status = status
         """Status of keyword
-        
+
         * 0 -- stable
         * 1 -- untested
         * 2 -- unstable
@@ -99,6 +102,7 @@ class Keyword(ToStrMixin, AbstractKeywords):
         "Return arch name"
         return self.name
 
+
 class KeywordsSet(set):
     "Set of :class:`Keywords <.Keyword>` objects"
     def __init__(self, init_list):
@@ -108,7 +112,7 @@ class KeywordsSet(set):
 
         to_create = []
         for item in start.itervalues():
-            item.sort(reverse = True)
-            if len(item)>=1:
+            item.sort(reverse=True)
+            if len(item) >= 1:
                 to_create.append(item[0])
         super(KeywordsSet, self).__init__(to_create)
