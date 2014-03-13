@@ -1,15 +1,16 @@
-from __future__ import absolute_import
 from ..generic import ToStrMixin
 #XML
 from .my_etree import etree
 
+
 __all__ = ('CategoryMetadata', )
+
 
 class CategoryMetadata(ToStrMixin):
     "Represent category metadata.xml as object"
 
     def __init__(self, metadata_path):
-        """Args: 
+        """Args:
             metadata_path - full path to category metadata.xml file"""
         self._metadata_path = metadata_path
         self._descrs = {}
@@ -37,4 +38,3 @@ class CategoryMetadata(ToStrMixin):
 
     def __unicode__(self):
         return unicode(self._metadata_path)
-
