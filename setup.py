@@ -19,7 +19,12 @@ tests_require = [
 ]
 
 
+if lt33():
+    tests_require.append('mock')
+
+
 if lt27():
+    install_packages.append("lxml")
     tests_require.append('unittest2')
 
 
