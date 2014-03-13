@@ -5,3 +5,4 @@ venv/
 .coverage
 nosetests.xml
 cover/
+.tox
