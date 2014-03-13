@@ -40,4 +40,3 @@ setup(
     keywords=["gentoo", "portage"],
     version="0.1a"
 )
-
