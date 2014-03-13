@@ -1,10 +1,10 @@
-
 """
 Module with universal etree module
-
 """
 
+
 __all__ = ('etree', )
+
 
 try:
     from lxml import etree

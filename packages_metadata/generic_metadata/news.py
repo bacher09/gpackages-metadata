@@ -8,21 +8,23 @@ from email.utils import getaddresses
 from ..generic import ToStrMixin, toint, file_get_content
 from ..abstract import AbstractNewsItem, SimpleMaintainer
 
+
 NEWS_STR_RE = r'^(?P<date>\d{4,4}-\d{2}-\d{2})-(?P<title>.*)$'
 news_re = re.compile(NEWS_STR_RE)
 
+
 class News(ToStrMixin):
     "Represent all news in special repositority"
-    
-    def __init__(self, repo_path = '/usr/portage'):
+
+    def __init__(self, repo_path='/usr/portage'):
         """Args:
-            repo_path -- full path to repository 
+            repo_path -- full path to repository
         """
         self.news_path = os.path.join(repo_path, 'metadata', 'news')
         if not os.path.isdir(self.news_path):
             raise ValueError
         # For repr
-        self.repo_path = repo_path 
+        self.repo_path = repo_path
 
     def iter_news(self):
         "Yields `NewsItem` object"
@@ -40,6 +42,7 @@ class News(ToStrMixin):
     def __unicode__(self):
         return unicode(self.repo_path)
 
+
 class NewsItem(ToStrMixin):
     "Represent news item"
 
@@ -52,7 +55,7 @@ class NewsItem(ToStrMixin):
         m = news_re.match(news_dir)
         if m is None:
             raise ValueError
-        p_dct =  m.groupdict()
+        p_dct = m.groupdict()
         try:
             date = datetime.strptime(p_dct['date'], '%Y-%m-%d')
         except ValueError:
@@ -75,7 +78,7 @@ class NewsItem(ToStrMixin):
             if m is not None and os.path.isfile(full_path):
                 lang = m.groupdict()['lang']
                 yield (full_path, lang)
-            
+
     def _fetch_news(self):
         for item, lang in self._iter_news_items():
             self._news_dict[lang] = NewsItemLang(item,
@@ -94,6 +97,7 @@ class NewsItem(ToStrMixin):
     def __unicode__(self):
         return unicode(self.name)
 
+
 def maintainers_list(tuple_list):
     s = set()
     if tuple_list:
@@ -101,9 +105,10 @@ def maintainers_list(tuple_list):
             s.add(SimpleMaintainer(email, name))
     return tuple(s)
 
+
 class NewsItemLang(AbstractNewsItem):
-    
-    def __init__(self, item, date, lang = 'en', name = ''):
+
+    def __init__(self, item, date, lang='en', name=''):
         f = file_get_content(item)
         self.sha1 = hashlib.sha1(f).hexdigest()
         self._mes_obj = message_from_string(f)
@@ -117,7 +122,7 @@ class NewsItemLang(AbstractNewsItem):
 
     @property
     def revision(self):
-        return toint(self._mes_obj.get('Revision', 1),1)
+        return toint(self._mes_obj.get('Revision', 1), 1)
 
     @property
     def format_ver(self):
@@ -127,7 +132,7 @@ class NewsItemLang(AbstractNewsItem):
         except ValueError:
             maj, min = 1, 0
 
-        return toint(maj,1), toint(min, 0)
+        return toint(maj, 1), toint(min, 0)
 
     @property
     def authors(self):

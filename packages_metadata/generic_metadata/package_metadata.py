@@ -5,16 +5,17 @@ from .my_etree import etree
 # Maintainers
 from .herds import Maintainer
 
-REMOTE_ID_TYPE = ( 'bitbucket', 'cpan', 'cpan-module', 'cran', 'ctan', 
-                   'freshmeat', 'github', 'gitorious', 'google-code', 
-                   'launchpad', 'pear', 'pecl', 'pypi', 'rubyforge', 
-                   'rubygems', 'sourceforge', 'sourceforge-jp', 'vim'
-                 )
+
+REMOTE_ID_TYPE = (
+    'bitbucket', 'cpan', 'cpan-module', 'cran', 'ctan', 'freshmeat', 'github',
+    'gitorious', 'google-code', 'launchpad', 'pear', 'pecl', 'pypi',
+    'rubyforge', 'rubygems', 'sourceforge', 'sourceforge-jp', 'vim'
+)
 
 REMOTE_IDS_TYPE = Enum(REMOTE_ID_TYPE)
 
-#TODO: Add support of restrict attribute !!!
 
+#TODO: Add support of restrict attribute !!!
 class PackageMetaData(ToStrMixin):
     "Represend package metadata.xml as object"
 
@@ -86,14 +87,15 @@ class PackageMetaData(ToStrMixin):
     def maintainers(self):
         "Return tuple of `Maintainers` objects"
         return self._maintainers
-    
+
     def __unicode__(self):
         return self._metadata_path
+
 
 class Upstream(ToStrMixin):
     """Represent upstream node on metadata.xml
     """
-    
+
     simple_attrs = (('changelog', 'changelog'),
                     ('bugs-to', 'bugs_to'),)
 
@@ -144,14 +146,14 @@ class Upstream(ToStrMixin):
     def __unicode__(self):
         return self.metadata_path
 
+
 class UpstreamMaintainer(Maintainer):
     "Represent maintainer node in upstream node"
-    status_dict = {'inactive' : 0, 'active': 1}
+    status_dict = {'inactive': 0, 'active': 1}
     "Dict of status mapping"
 
     def __init__(self, xml_object):
         super(UpstreamMaintainer, self).__init__(xml_object)
-        st = xml_object.attrib.get('status','inactive')
+        st = xml_object.attrib.get('status', 'inactive')
         self.status = self.status_dict.get(st, 0)
         "Maintainer status"
-

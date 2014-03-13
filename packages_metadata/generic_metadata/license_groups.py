@@ -1,11 +1,14 @@
 from collections import defaultdict
 from ..generic import file_get_content, StrThatIgnoreCase, ToStrMixin, \
-                      file_sha1
+    file_sha1
+
 
 DEFAULT_FILE_PATH = '/usr/portage/profiles/license_groups'
 
+
 def first_and_other(lst):
     return (lst[0], lst[1:]) if len(lst) > 0 else (None, [])
+
 
 def split_without_comment(lic_str):
     ci = lic_str.find('#')
@@ -13,6 +16,7 @@ def split_without_comment(lic_str):
         return lic_str.split()
     else:
         return lic_str[:ci].split()
+
 
 def parse_groups(groups_str):
     lic_dct = defaultdict(set)
@@ -39,7 +43,8 @@ def parse_groups(groups_str):
 
     return lic_dct
 
-def load_groups(file_path = DEFAULT_FILE_PATH):
+
+def load_groups(file_path=DEFAULT_FILE_PATH):
     """Load file profiles/license_groups and represend it as dict
 
     Args:
@@ -50,7 +55,6 @@ def load_groups(file_path = DEFAULT_FILE_PATH):
 
     Example:
         {u'EULA': set([u'cadsoft', ...]), u'GPL-COMPATIBLE': set([...]), ...}
-
     """
     fc = file_get_content(file_path)
 
@@ -62,9 +66,9 @@ def load_groups(file_path = DEFAULT_FILE_PATH):
 
 class LicenseGroups(ToStrMixin):
 
-    def __init__(self, file_path = DEFAULT_FILE_PATH):
+    def __init__(self, file_path=DEFAULT_FILE_PATH):
         """Args:
-            file_path -- full path to license_groups file, by default it 
+            file_path -- full path to license_groups file, by default it
                          /usr/portage/profiles/license_groups
         """
         self.groups_path = file_path
@@ -89,7 +93,6 @@ class LicenseGroups(ToStrMixin):
         Example:
             get_licenses_by_group('OSI-APPROVED') -> set([u'AFL-3.0', ...])
         """
-    
         return self.groups_dict[group_name]
 
     def get_groups_by_license(self, license_name):
@@ -110,4 +113,3 @@ class LicenseGroups(ToStrMixin):
 
     def __unicode__(self):
         return unicode(self.groups_path)
-

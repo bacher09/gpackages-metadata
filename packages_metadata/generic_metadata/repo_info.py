@@ -1,25 +1,23 @@
-from __future__ import absolute_import
 from functools import total_ordering
 import os.path
+# Validators
+from ..validators import validate_url, validate_email, ValidationError
+from ..generic import ToStrMixin, cached_property
+from .repo_const import REPOS_TYPE
 # Layman API
 #from layman.api import LaymanAPI
 import layman.api
 layman_api = layman.api.LaymanAPI()
 
-# Validators
-from ..validators import validate_url, validate_email, ValidationError
-
-from ..generic import ToStrMixin, cached_property
-from .repo_const import REPOS_TYPE
 
 __all__ = ('TreeMetadata',)
+
 
 def _gen_funct(name):
     func = lambda self: self._dct.get(name)
     func.__name__ = name
     return func
 
-            
 
 @total_ordering
 class SourcesObject(ToStrMixin):
@@ -53,33 +51,34 @@ class SourcesObject(ToStrMixin):
     def __unicode__(self):
         return self.source_url
 
+
 class TreeMetadataMetaclass(type):
     """Dynamicaly add properties by `simple_attrs` tuple
     It gets this name from `_dct` dict in object"""
-    
+
     def __init__(cls, name, bases, dct):
         super(TreeMetadataMetaclass, cls).__init__(name, bases, dct)
         for v in cls.simple_attrs:
             setattr(cls, v, property(_gen_funct(v)))
 
+
 class TreeMetadata(ToStrMixin):
     "Represent metadata information about portage tree (overlay)"
     __metaclass__ = TreeMetadataMetaclass
 
-    simple_attrs = ( 'name', 'description', 'supported', 'owner_name',
-                     'official', 'irc'
-                   )
+    simple_attrs = ('name', 'description', 'supported', 'owner_name',
+                    'official', 'irc')
     statuses = {'official': 0, 'unofficial': 1}
-    qualities = {'stable': 0 , 'testing': 1, 'experimental': 2}
+    qualities = {'stable': 0, 'testing': 1, 'experimental': 2}
 
     storage_path = os.path.join(layman_api.config['storage'], '')
     installed = frozenset(layman_api.get_installed())
     available = frozenset(layman_api.get_available())
 
-    def __init__(self, repo_name, repo_location = None, dct = None):
+    def __init__(self, repo_name, repo_location=None, dct=None):
         """Args:
             repo_name -- repository name
-            dct -- dict of params, could be None that it will be calculated 
+            dct -- dict of params, could be None that it will be calculated
         """
         repo_name = self._find_real_repo_name(repo_name, repo_location)
         self.repo_name = repo_name
@@ -95,8 +94,8 @@ class TreeMetadata(ToStrMixin):
             return try_name
         else:
             return None
-        
-    def _find_real_repo_name(self, repo_name, repo_location = None):
+
+    def _find_real_repo_name(self, repo_name, repo_location=None):
         gen_str = 'gentoo-'
 
         try_name = None
@@ -112,35 +111,36 @@ class TreeMetadata(ToStrMixin):
         elif (gen_str + repo_name) in self.available:
             return gen_str + repo_name
         elif repo_name.startswith(gen_str) and \
-            (repo_name[len(gen_str):]) in self.available:
+                (repo_name[len(gen_str):]) in self.available:
 
             return repo_name[len(gen_str):]
-
         return None
 
     def _get_info(self, repo_name):
         if repo_name == 'gentoo':
-            return {'name': 'gentoo',
-                    'description': 'Gentoo main repository',
-                    'supported': True,
-                    'owner_name': None,
-                    'owner_email': None,
-                    'official': True,
-                    'irc': None,
-                    'homepage': 'http://gentoo.org/',
-                    'quality': 'stable',
-                    'status': 'official',
-                    'feeds': [],
-                    'sources': [],
-                   }
+            return {
+                'name': 'gentoo',
+                'description': 'Gentoo main repository',
+                'supported': True,
+                'owner_name': None,
+                'owner_email': None,
+                'official': True,
+                'irc': None,
+                'homepage': 'http://gentoo.org/',
+                'quality': 'stable',
+                'status': 'official',
+                'feeds': [],
+                'sources': [],
+            }
         elif repo_name is None:
-            return {'name': 'none',
-                    'description': None,
-                    'quality': 'experimental',
-                    'official': False,
-                    'feeds': [],
-                    'sources': [],
-                   }
+            return {
+                'name': 'none',
+                'description': None,
+                'quality': 'experimental',
+                'official': False,
+                'feeds': [],
+                'sources': [],
+            }
         else:
             return layman_api.get_all_info(repo_name)[repo_name]
 
@@ -187,7 +187,7 @@ class TreeMetadata(ToStrMixin):
     @cached_property
     def sources(self):
         "Return list of `SourcesObject`s"
-        ret = set() 
+        ret = set()
         for source in self._dct['sources']:
             ret.add(SourcesObject(source))
         return list(ret)
@@ -199,4 +199,3 @@ class TreeMetadata(ToStrMixin):
 
     def __unicode__(self):
         return self.repo_name
-

@@ -3,18 +3,22 @@ from collections import defaultdict
 import os.path
 import os
 
+
 __all__ = ('get_uses_info', 'get_local_uses_info', 'get_use_special_info')
+
 
 USES_RE = r'(?P<use>[a-zA-Z0-9\-_]+) - (?P<description>.*)'
 USES_DESC_RE = r'^%s$' % USES_RE
 USES_LOCAL_DESC_RE = r'^(?P<package>[^#].*):%s$' % USES_RE
 DESC_USE_RE = r'^(?P<name>[^\.]+)\.desc$'
 
+
 use_re = re.compile(USES_DESC_RE)
 use_local_re = re.compile(USES_LOCAL_DESC_RE)
 desc_re = re.compile(DESC_USE_RE)
 
-def _get_info(filename, re_string, modify_function, res_var = None):
+
+def _get_info(filename, re_string, modify_function, res_var=None):
     if res_var is None:
         res_var = {}
     use_desc = open(filename, 'r').read()
@@ -27,7 +31,8 @@ def _get_info(filename, re_string, modify_function, res_var = None):
 
     return res_dict
 
-def get_uses_info(filename = '/usr/portage/profiles/use.desc'):
+
+def get_uses_info(filename='/usr/portage/profiles/use.desc'):
     """
     Args:
         filename -- full path to use.desc file
@@ -47,11 +52,12 @@ def get_uses_info(filename = '/usr/portage/profiles/use.desc'):
 
     return _get_info(filename, use_re, action)
 
-def get_local_uses_info(filename = '/usr/portage/profiles/use.local.desc'):
+
+def get_local_uses_info(filename='/usr/portage/profiles/use.local.desc'):
     """
     Args:
         filename -- full path to use.local.desc file
-        
+
     Returns:
         :class:`defaultdict(dict) <collections.defaultdict>` with use flag as \
     first key, package name as second key, and description as value.
@@ -68,13 +74,15 @@ def get_local_uses_info(filename = '/usr/portage/profiles/use.local.desc'):
 
     return _get_info(filename, use_local_re, action, defaultdict(dict))
 
+
 def _set_prefixes(prefix, dct):
     newdct = {}
     for key, item in dct.iteritems():
         newdct['%s_%s' % (prefix, key)] = item
     return newdct
 
-def get_use_special_info(dirname = '/usr/portage/profiles/desc'):
+
+def get_use_special_info(dirname='/usr/portage/profiles/desc'):
     """
     Args:
         dirname -- full path to descrs files, /usr/portage/profiles/desc \
@@ -96,5 +104,3 @@ def get_use_special_info(dirname = '/usr/portage/profiles/desc'):
             filename = os.path.join(dirname, name)
             uses.update(_set_prefixes(prefix, get_uses_info(filename)))
     return uses
-
-

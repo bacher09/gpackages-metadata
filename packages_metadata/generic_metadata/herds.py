@@ -4,30 +4,33 @@ from .my_etree import etree
 from ..generic import ToStrMixin
 from ..abstract import SimpleMaintainer
 
+
 def _gen_func(name):
     return lambda self: getattr(self, name)
 
+
 class AbstractXmlObject(object):
-    """Abstract class for iheritance, 
+    """Abstract class for iheritance,
     dynamicly generate properties by `attrs` param
     each generated param return value of `_` + property name variable.
     """
     attrs = ()
-    
+
     def __new__(cls, *args, **kwargs):
         for val in cls.attrs:
             setattr(cls, val, property(_gen_func('_'+val)))
-        ins = super(AbstractXmlObject, cls).__new__(cls, *args, **kwargs) 
+        ins = super(AbstractXmlObject, cls).__new__(cls, *args, **kwargs)
         #attrs = getattr(ins, 'attrs')
         return ins
-    
+
     def __init__(self, xml_object):
         "Set internal value for each value in attrs parameter"
         for val in self.attrs:
-            obj_xml = xml_object.find(val) 
+            obj_xml = xml_object.find(val)
             setattr(self, '_' + val, None)
             if obj_xml is not None:
                 setattr(self, '_' + val, obj_xml.text)
+
 
 class Maintainer(AbstractXmlObject, SimpleMaintainer):
     """Have 3 atributes:
@@ -43,6 +46,7 @@ class Maintainer(AbstractXmlObject, SimpleMaintainer):
         if self._email is not None:
             self._email = self._email.lower()
 
+
 class Herd(AbstractXmlObject, ToStrMixin):
     """Have 3 atributes:
         - name -- herd name
@@ -53,7 +57,7 @@ class Herd(AbstractXmlObject, ToStrMixin):
     attrs = ('name', 'email', 'description')
 
     def __init__(self, xml_object):
-        super(Herd, self).__init__(xml_object) 
+        super(Herd, self).__init__(xml_object)
         self._xml_object = xml_object
 
     def __eq__(self, other):
@@ -77,7 +81,7 @@ class Herd(AbstractXmlObject, ToStrMixin):
 
 class Herds(ToStrMixin):
     "Object that represent herds.xml file "
-    def __init__(self, herd_path = '/usr/portage/metadata/herds.xml'):
+    def __init__(self, herd_path='/usr/portage/metadata/herds.xml'):
         self._herd_path = herd_path
         self._herd_parse = etree.parse(herd_path)
         self._herds_dict = None

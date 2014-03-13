@@ -5,12 +5,15 @@ import collections
 import os
 import os.path
 
+
 def reverse_enumerate(lst):
     return izip(xrange(len(lst)-1, -1, -1), reversed(lst))
+
 
 def filter_predicate(file_name, file_path):
     full_file = os.path.join(file_path, file_name)
     return not file_name.startswith('.') and os.path.isfile(full_file)
+
 
 class LicenseMixin(ToStrMixin):
 
@@ -19,6 +22,7 @@ class LicenseMixin(ToStrMixin):
             return self[license]
         except (TypeError, KeyError):
             return None
+
 
 class Licenses(LicenseMixin):
     __slots__ = ('is_valid', 'licenses_dict', 'licenses_path', 'tree_path')
@@ -74,6 +78,7 @@ class Licenses(LicenseMixin):
     def __unicode__(self):
         return unicode(self.tree_path)
 
+
 def preinit_cache(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
@@ -83,10 +88,11 @@ def preinit_cache(func):
 
     return wrapper
 
+
 class LicensesSet(LicenseMixin):
 
     __slots__ = ('licenses_list', 'licenses_set', '_cache', '_cache_is_init')
-    
+
     def __init__(self, val):
         self.licenses_list = []
         self.licenses_set = set()
@@ -114,15 +120,15 @@ class LicensesSet(LicenseMixin):
                 cache[key] = num
         self._cache = cache
         self._cache_is_init = True
-        
+
     def copy(self):
         return LicensesSet(self.licenses_list)
 
-    def add_licenses(self, licenses):   
+    def add_licenses(self, licenses):
         if not isinstance(licenses, Licenses):
             return None
 
-        if (not licenses in self.licenses_set) and licenses.is_valid: 
+        if (not licenses in self.licenses_set) and licenses.is_valid:
             self.licenses_list.append(licenses)
             self.licenses_set.add(licenses)
             self._cache_is_init = False
@@ -162,14 +168,13 @@ class LicensesSet(LicenseMixin):
             key = unicode(key).lower()
         except:
             raise TypeError
-        return  self.licenses_list[self._cache[key.lower()]][key]
+        return self.licenses_list[self._cache[key.lower()]][key]
 
     def __unicode__(self):
         res = ""
-        for num ,licenses in enumerate(self.licenses_list):
+        for num, licenses in enumerate(self.licenses_list):
             if num == 0:
                 res += repr(licenses)
             else:
                 res += ', %s' % repr(licenses)
         return '[%s]' % res
-
