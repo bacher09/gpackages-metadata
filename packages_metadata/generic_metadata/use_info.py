@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 import os.path
 import os
+import six
 
 
 __all__ = ('get_uses_info', 'get_local_uses_info', 'get_use_special_info')
@@ -21,7 +22,8 @@ desc_re = re.compile(DESC_USE_RE)
 def _get_info(filename, re_string, modify_function, res_var=None):
     if res_var is None:
         res_var = {}
-    use_desc = open(filename, 'r').read()
+    with open(filename, 'r') as f:
+        use_desc = f.read()
     uses_desc = use_desc.split("\n")
     res_dict = res_var
     for use_str in uses_desc:
@@ -77,7 +79,7 @@ def get_local_uses_info(filename='/usr/portage/profiles/use.local.desc'):
 
 def _set_prefixes(prefix, dct):
     newdct = {}
-    for key, item in dct.iteritems():
+    for key, item in six.iteritems(dct):
         newdct['%s_%s' % (prefix, key)] = item
     return newdct
 

@@ -1,0 +1,44 @@
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# cat /usr/portage/profiles/use.local.desc | egrep '^#|^$' -v | shuf -n 40 | sort
+
+app-admin/conky:thinkpad - enable support for IBM/Lenovo notebooks
+app-doc/csound-manual:html - Install HTML documentation
+app-emulation/ganeti:kvm - Enable KVM support
+app-emulation/xen-tools:flask - Enable the Flask XSM module from NSA
+app-i18n/fcitx:enchant - Use app-text/enchant for text prediction
+app-text/texlive:xindy - Add support for app-text/xindy, a flexible indexing system
+app-text/yagf:cuneiform - Enable support for the app-text/cuneiform OCR engine.
+dev-haskell/json:parsec - Add support for parsing with Parsec
+dev-java/diablo-jdk:jce - Enable Java Cryptographic Extension Unlimited Strength Policy files
+dev-lang/erlang:compat-ethread - Enable compatibility with pre-pentium 4 CPUs in the ethread library.
+dev-libs/libburn:cdio - Enable EXPERIMENTAL use of libcdio as system adapter
+dev-libs/ucommon:socks - Build with socks proxy support
+dev-qt/qtdeclarative:qt3support - Enable the Qt3Support libraries for Qt4. Note that this does not mean you can compile pure Qt3 programs with Qt4.
+dev-scheme/guile:debug-freelist - Include garbage collector freelist debugging code
+dev-scheme/kawa:awt - Assume AWT is available
+dev-vcs/git:blksha1 - Use the new optimized SHA1 implementation
+dev-vcs/git:highlight - GitWeb support for app-text/highlight
+games-sports/speed-dreams:xrandr - Enable support for the X xrandr extension
+media-libs/mediastreamer:amr - Use of AMR Narrow Band codec plugin
+media-libs/mesa:openvg - Enable the OpenVG 2D acceleration API for Gallium3D.
+media-radio/ax25-tools:X - Enable some X based configuration tools.
+media-radio/xastir:gdal - Support for some further map formats
+media-sound/mpg123:int-quality - Use rounding instead of fast truncation for integer output, where possible
+media-sound/rhythmbox:libsecret - Enable libsecret support to store login credentials
+media-tv/gentoo-vdr-scripts:nvram - Add support for using nvram-wakeup to set wakeup time in bios
+media-tv/mythtv:libass - SRT/SSA/ASS (SubRip / SubStation Alpha) subtitle support
+media-video/ffmpeg:vaapi - Enables VAAPI (Video Acceleration API) for hardware decoding
+net-im/qutim:xscreensaver - Use X screensaver protocol extension to monitor idle/active status based on mouse/keyboard events
+net-im/vacuum:filemessagearchive - Allows to save the history of conversations to local files
+net-libs/cyassl:coding - Enable Coding base 16/64
+net-libs/cyassl:memory - Enable memory callbacks
+net-libs/ptlib:dtmf - Enable DTMF encoding/decoding support
+sci-geosciences/qlandkartegt:gpsbabel - Enable support for wide range of geodata file formats
+sec-policy/selinux-base:ubac - Enable User Based Access Control (UBAC) in the SELinux policy
+sys-apps/flashrom:buspirate_spi - Enable Bus Pirate SPI programmer
+sys-auth/polkit:systemd - Use sys-apps/systemd instead of sys-auth/consolekit for session tracking
+www-plugins/gnash:ssh - Enable using SSH for network authentication in libnet
+x11-misc/compton:opengl - Enable VSync with SGI_swap_control OpenGL extension
+x11-terms/rxvt-unicode:font-styles - Enable support for bold and italic fonts
+x11-themes/gtk-engines-qtcurve:mozilla - Install GUI theme tweaks for mozilla based browsers www-client/firefox

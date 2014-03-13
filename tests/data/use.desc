@@ -1,0 +1,44 @@
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# cat /usr/portage/profiles/use.desc | egrep '^#|^$' -v | shuf -n 40 | sort
+
+3dfx - Enable support for Voodoo chipsets, also called as 3DFX and TDFX
+acl - Add support for Access Control Lists
+ao - Use libao audio output library for sound playback
+aqua - Include support for the Mac OS X Aqua (Carbon/Cocoa) GUI
+avahi - Add avahi/Zeroconf support
+bootstrap - !!internal use only!! DO NOT SET THIS FLAG YOURSELF!, used during original system bootstrapping [make stage2]
+cdinstall - Copy files from the CD rather than asking the user to copy them, mostly used with games
+css - Enable reading of encrypted DVDs
+encode - Add support for encoding of audio or video files
+foomaticdb - Add support for the foomatic printing driver database
+gcj - Enable building with gcj (The GNU Compiler for the Javatm Programming Language)
+gnome - Add GNOME support
+gphoto2 - Add digital camera support
+gtkhtml - Add support for gnome-extra/gtkhtml
+infiniband - Enable Infiniband RDMA transport support
+ipv6 - Add support for IP version 6
+jack - Add support for the JACK Audio Connection Kit
+joystick - Add support for joysticks in all packages
+kerberos - Add kerberos support
+mhash - Add support for the mhash library
+minimal - Install a very minimal build (disables, for example, plugins, fonts, most drivers, non-critical features)
+motif - Add support for the Motif toolkit
+mp3 - Add support for reading mp3 files
+mp4 - Support for MP4 container format
+nas - Add support for network audio sound
+old-linux - Add support for linux-2.4 and older
+pda - Add support for portable devices
+plotutils - Add support for plotutils (library for 2-D vector graphics)
+sharedmem - Add support for shared memory use
+skey - Enable S/Key (Single use password) authentication support
+slang - Add support for the slang text display library (it's like ncurses, but different)
+socks5 - Add support for the socks5 proxy
+spell - Add dictionary support
+sysvipc - Support for System V-compatible inter-process communication
+tidy - Add support for HTML Tidy
+tokenizer - Add support for the PHP file parser
+wavpack - Add support for wavpack audio compression tools
+wddx - Add support for Web Distributed Data eXchange
+wmf - Add support for the Windows Metafile vector image format
+xscreensaver - Add support for XScreenSaver extension
