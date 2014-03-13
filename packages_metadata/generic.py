@@ -130,8 +130,16 @@ def file_sha1(file_path):
     sha1 = None
     if os.path.exists(file_path):
         with open(file_path, 'r') as f:
-            sha1 = hashlib.sha1(f.read()).hexdigest()
+            sha1 = sha1(f.read())
     return sha1
+
+
+if six.PY3:
+    def sha1(data):
+        return hashlib.sha1(data.encode('utf8')).hexdigest()
+else:
+    def sha1(data):
+        return hashlib.sha1(data).hexdigest()
 
 
 def file_mtime(file_path):

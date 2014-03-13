@@ -5,7 +5,7 @@ import hashlib
 from datetime import datetime
 from email import message_from_string
 from email.utils import getaddresses
-from ..generic import ToStrMixin, toint, file_get_content
+from ..generic import ToStrMixin, toint, file_get_content, sha1
 from ..abstract import AbstractNewsItem, SimpleMaintainer
 
 
@@ -16,13 +16,16 @@ news_re = re.compile(NEWS_STR_RE)
 class News(ToStrMixin):
     "Represent all news in special repositority"
 
-    def __init__(self, repo_path='/usr/portage'):
+    def __init__(self, repo_path='/usr/portage', news_path=None):
         """Args:
             repo_path -- full path to repository
         """
-        self.news_path = os.path.join(repo_path, 'metadata', 'news')
-        if not os.path.isdir(self.news_path):
+        if news_path is None:
+            news_path = os.path.join(repo_path, 'metadata', 'news')
+        if not os.path.isdir(news_path):
             raise ValueError
+
+        self.news_path = news_path
         # For repr
         self.repo_path = repo_path
 
@@ -81,9 +84,7 @@ class NewsItem(ToStrMixin):
 
     def _fetch_news(self):
         for item, lang in self._iter_news_items():
-            self._news_dict[lang] = NewsItemLang(item,
-                                                 self.date,
-                                                 lang,
+            self._news_dict[lang] = NewsItemLang(item, self.date, lang,
                                                  self.title)
 
     @property
@@ -109,9 +110,9 @@ def maintainers_list(tuple_list):
 class NewsItemLang(AbstractNewsItem):
 
     def __init__(self, item, date, lang='en', name=''):
-        f = file_get_content(item)
-        self.sha1 = hashlib.sha1(f).hexdigest()
-        self._mes_obj = message_from_string(f)
+        news_text = file_get_content(item)
+        self.sha1 = sha1(news_text)
+        self._mes_obj = message_from_string(news_text)
         self.date = date
         self.lang = lang
         self.name = name
