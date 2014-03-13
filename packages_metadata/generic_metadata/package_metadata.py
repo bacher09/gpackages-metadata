@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from ..generic import ToStrMixin, Enum
 #XML
 from .my_etree import etree

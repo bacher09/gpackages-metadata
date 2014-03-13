@@ -19,8 +19,7 @@ class AbstractXmlObject(object):
     def __new__(cls, *args, **kwargs):
         for val in cls.attrs:
             setattr(cls, val, property(_gen_func('_'+val)))
-        ins = super(AbstractXmlObject, cls).__new__(cls, *args, **kwargs)
-        #attrs = getattr(ins, 'attrs')
+        ins = super(AbstractXmlObject, cls).__new__(cls)
         return ins
 
     def __init__(self, xml_object):
