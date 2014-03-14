@@ -51,14 +51,14 @@ class PackageMetaData(ToStrMixin):
             lang = descr.attrib.get('lang', 'en')
             self.descr[lang] = descr.text
 
-    def iter_mainteiner(self):
+    def iter_maintainer(self):
         "Yields `Maintainer` object"
         for maintainer_tree in self._metadata_xml.iterfind('maintainer'):
             yield Maintainer(maintainer_tree)
 
     def _parse_maintainers(self):
         maintainers = set()
-        for maintainer in self.iter_mainteiner():
+        for maintainer in self.iter_maintainer():
             maintainers.add(maintainer)
         self._maintainers = tuple(maintainers)
 

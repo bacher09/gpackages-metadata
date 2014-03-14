@@ -70,7 +70,7 @@ class Herd(AbstractXmlObject, ToStrMixin):
     def __hash__(self):
         return hash(self.name)
 
-    def iter_mainteiner(self):
+    def iter_maintainer(self):
         for maintainer_tree in self._xml_object.iterfind('maintainer'):
             yield Maintainer(maintainer_tree)
 
@@ -116,7 +116,7 @@ class Herds(ToStrMixin):
         herd_dict = self.get_herds_indict()
         maintainer_dict = defaultdict(list)
         for herd in herd_dict.itervalues():
-            for maintainer in herd.iter_mainteiner():
+            for maintainer in herd.iter_maintainer():
                 maintainer_dict[maintainer].append(herd.name)
         self._maintainers_dict = maintainer_dict
         return maintainer_dict

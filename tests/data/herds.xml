@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE herds SYSTEM "http://www.gentoo.org/dtd/herds.dtd">
+<?xml-stylesheet href="/xsl/herds.xsl" type="text/xsl" ?>
+<?xml-stylesheet href="/xsl/guide.xsl" type="text/xsl" ?>
+
+<herds>
+<herd>
+    <name>test</name>
+    <email>test@mail.com</email>
+    <description>Maintainers of test</description>
+    <maintainer>
+        <email>test-maintainer@mail.com</email>
+        <name>John Doe</name>
+    </maintainer>
+    <maintainer>
+        <email>other-maintainer@mail.com</email>
+    </maintainer>
+</herd>
+<herd>
+    <name>other</name>
+    <email>other@other.org</email>
+    <description>Other description</description>
+  <maintainer>
+    <email>maintainer@project.org</email>
+    <name>Sam</name>
+  </maintainer>
+  <maintainer>
+    <email>maintainer2@project.org</email>
+    <name>Jack</name>
+  </maintainer>
+</herd>
+<herd>
+  <name>proj</name>
+  <email>proj@mail.com</email>
+  <description>Proj description</description>
+  <maintainingproject>/proj/link.xml</maintainingproject>
+</herd>
+</herds>
