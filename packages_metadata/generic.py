@@ -76,17 +76,17 @@ class StrThatIgnoreCase(six.text_type):
     __slots__ = ('_forcmp',)
 
     def __init__(self, value):
-        super(StrThatIgnoreCase, self).__init__(value)
+        super(StrThatIgnoreCase, self).__init__()
         self._forcmp = self.lower()
 
     def __hash__(self):
         return hash(self._forcmp)
 
     def __eq__(self, other):
-        return self._forcmp == unicode(other).lower()
+        return self._forcmp == six.text_type(other).lower()
 
     def __ne__(self, other):
-        return self._forcmp != unicode(other).lower()
+        return self._forcmp != six.text_type(other).lower()
 
 
 def lofstr_to_ig(list_obj):
